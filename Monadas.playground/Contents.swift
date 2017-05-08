@@ -11,4 +11,13 @@ enum Optional<A> {
 			return .None
 		}
 	}
+
+	func flatMap<B>(_ transform: (A) -> Optional<B>) -> Optional<B> {
+		switch self {
+		case .None:
+			return .None
+		case let .Some(a)
+			return transform(a)
+		}
+	}
 }

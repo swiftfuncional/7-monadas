@@ -4,11 +4,8 @@ enum Optional<A> {
 	case Some(_: A)
 
 	func map<B>(_ transform: (A) -> B) -> Optional<B> {
-		switch self {
-		case let .Some(a):
+		return self.flatMap { a in
 			return .Some(transform(a))
-		case .None:
-			return .None
 		}
 	}
 

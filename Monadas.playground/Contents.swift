@@ -1,16 +1,19 @@
-import Foundation
+class AddUserUseCase {
 
-//Imperative
-let content = NSURL(string: "http://swiftfuncional.com")
-	.flatMap { NSData(contentsOf: $0 as URL) }
-	.flatMap { NSString(data: $0 as Data, encoding: String.Encoding.utf8.rawValue) }
+	let db = UserDatabase()
 
-let anOptional = Int("3")
+	func add(name: String, password: String, premium: Bool, newsletter: Bool) -> Result<User, UserError> {
+		let user = User(name: name, password: password, premium: premium, newsletter: newsletter)
 
-anOptional.flatMap { x in .some(x) } == anOptional
+		let validator = UserValidator.Name && (UserValidator.Password && UserValidator.Newsletter)
+		//The same as: let validator = (UserValidator.Name && UserValidator.Password) && UserValidator.Newsletter
 
-let x = 3
+		return validator(user).map(db.create)
+	}
+}
 
-let fn: (Int) -> Int = { $0 + 5 }
+let useCase = AddUserUseCase()
 
-Optional.some(3).flatMap(fn) == fn(x)
+useCase.add(name: "Alex", password: "functional", premium: true, newsletter: false).map {
+	print("SUCCESS: User created - \($0)")
+}

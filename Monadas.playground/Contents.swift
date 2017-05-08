@@ -1,10 +1,6 @@
 import Foundation
 
 //Imperative
-if let url = NSURL(string: "http://swiftfuncional.com") {
-	if let data = NSData(contentsOf: url as URL) {
-		if let content = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue) {
-
-		}
-	}
-}
+let content = NSURL(string: "http://swiftfuncional.com")
+	.flatMap { NSData(contentsOf: $0 as URL) }
+	.flatMap { NSString(data: $0 as Data, encoding: String.Encoding.utf8.rawValue) }

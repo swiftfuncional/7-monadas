@@ -5,8 +5,12 @@ let content = NSURL(string: "http://swiftfuncional.com")
 	.flatMap { NSData(contentsOf: $0 as URL) }
 	.flatMap { NSString(data: $0 as Data, encoding: String.Encoding.utf8.rawValue) }
 
-let m1 = Int("3")
-let f1: (Int) -> Float? = { Float($0) }
-let f2: (Float) -> String? = { String($0) }
+let anOptional = Int("3")
 
-m1.flatMap(f1).flatMap(f2) == m1.flatMap { x in f1(x).flatMap(f2) }
+anOptional.flatMap { x in .some(x) } == anOptional
+
+let x = 3
+
+let fn: (Int) -> Int = { $0 + 5 }
+
+Optional.some(3).flatMap(fn) == fn(x)

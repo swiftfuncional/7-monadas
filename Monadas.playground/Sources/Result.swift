@@ -10,4 +10,13 @@ public enum Result<S, E> {
 			return .Success(transform(value))
 		}
 	}
+
+	public func flatMap<T>(_ transform: (S) -> Result<T, E>) -> Result<T, E> {
+		switch self {
+		case let .Failure(reason):
+			return .Failure(reason)
+		case let .Success(value):
+			return transform(value)
+		}
+	}
 }

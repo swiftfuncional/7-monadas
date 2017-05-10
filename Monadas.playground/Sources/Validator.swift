@@ -4,16 +4,7 @@ public func &&<T, E>(
 	_ firstValidator: @escaping Validator<T, E>,
 	_ secondValidator: @escaping Validator<T, E>) -> Validator<T, E> {
 
-	return { t in
-		let result = firstValidator(t)
-
-		switch result {
-		case let .Failure(reason):
-			return .Failure(reason)
-		case let .Success(t1):
-			return secondValidator(t1)
-		}
-	}
+	return { firstValidator($0).flatMap(secondValidator) }
 }
 
 public func ||<T, E>(
